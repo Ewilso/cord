@@ -2,7 +2,6 @@
 global output
 global chatput
 global commandlist
-global sendmode
 global currentchan
 global currentguild
 global loggedin
@@ -11,18 +10,17 @@ global aswho
 loggedin = ""
 aswho = ""
 currentchan = "general"
-currentguild = "Cordless"
-sendmode = False
+currentguild = "hurbIndustries"
 output = [""]
 chatput = [""]
 commandlist = [
 "",
-"Command (abbreviation) --arguments - description",
+"Command (abbreviation) - description",
 "",
-"quit          (q) - Quits this application",
-"help          (h) - Displays this menu",
-"send          (s) - Enter messaging mode",
-" - exit       (e) - exit send mode",
+"/quit          (/q) - Quits this application",
+"/help          (/h) - Displays this menu",
+"/guild    *    (/g) - Go to guild number i",
+"/chan     *    (/c) - Select channel i in current guild",
 "",
 "*  - Not working yet",
 "",

@@ -22,6 +22,17 @@ def list_out(msg_window, num_rows, input_window):
         input_window.refresh()
         outcount+=1
 
+def update_messages(msg_window, num_rows, input_window):
+    returnto = input_window.getyx()
+    outcount = 0
+    for items in config.output:
+        msg_window.addstr(outcount,2,config.output[outcount])
+        while len(config.output) > num_rows -6:
+            config.output.pop(1)
+        msg_window.refresh()
+        outcount+=1
+    input_window.move(returnto[0],returnto[1])
+
 #Clears the output, dumbass
 def clear_out(msg_window,num_rows, input_window):
     config.output = ["",]
@@ -34,27 +45,12 @@ def check_command(command, msg_window, num_rows, input_window):
         return
 
     #Help command to list options, find them in the config.py
-    elif command == "help" or command == "h":
+    elif command == "/help" or command == "/h":
         count = 0
         config.output.append("["+time.ctime()+"] Help Menu:")
         for items in config.commandlist:
             config.output.append(config.commandlist[count])
             count+=1
-
-    #Enters send mode, or in vim terms: input mode
-    elif command == "send" or command == "s":
-        config.sendmode = True
-        while True:
-            out = usr_input(input_window, 1, 2, 200, "$")
-            input_window.clear()
-            input_window.border(0)
-            input_window.refresh()
-            if out == "exit" or out == "e":
-                config.output.append("["+time.ctime()+"] Command Mode")
-                list_out(msg_window,num_rows,input_window)
-                break
-            elif out =="":
-                1+1
 
     #Catches command exceptions, don't remove!
     else:
