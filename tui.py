@@ -25,7 +25,7 @@ def main_window():
     input_window.border(0)
     status_window = curses.newwin(1, num_cols+2, 0, 0)
     status_window.attron(curses.color_pair(3))
-    statusbarstr  = " | {} | Status: {} | Type '/help' to list commands |".format(config.aswho, config.loggedin)
+    statusbarstr  = " {} | Status: {} | Type '/help' to list commands |".format(config.aswho, config.loggedin)
     status_window.addstr(0, 0, statusbarstr)
     status_window.addstr(0, len(statusbarstr), " " * (num_cols - len(statusbarstr) - 1))
     status_window.attroff(curses.color_pair(3))

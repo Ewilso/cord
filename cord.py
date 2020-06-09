@@ -38,7 +38,7 @@ class MyClient(discord.Client):
         channel = discord.utils.get(guild.text_channels, name=config.currentchan)
         messages = await channel.history(limit=100).flatten()
         #if message.channel == config.currentchan:
-        commands.clear_out(tui.msg_window,tui.num_rows, tui.input_window)
+        commands.clear_out(tui.msg_window)
         for item in messages:
             config.output.append(str(item.author)+" "+str(item.content))
         commands.update_messages(tui.msg_window, tui.num_rows, tui.input_window)
