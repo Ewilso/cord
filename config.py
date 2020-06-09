@@ -1,6 +1,6 @@
 #setting application wide variables
 global output
-global chatput
+global chanput
 global commandlist
 global currentchan
 global currentguild
@@ -12,7 +12,7 @@ aswho = ""
 currentchan = "ricing-theming"
 currentguild = "r/unixporn"
 output = [""]
-chatput = [""]
+chanput = [""]
 commandlist = [
 "",
 "Command (abbreviation) - description",
