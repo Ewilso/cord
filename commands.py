@@ -1,6 +1,7 @@
 import curses
 import config
 import time
+import tui
 
 #resets the user input every time a command is run.
 def usr_input(window, r, c, length, prompt):
@@ -10,33 +11,34 @@ def usr_input(window, r, c, length, prompt):
     dec = choice.decode("utf-8")
     return dec
 
-#writes the ouput array in config.py to the main window and then reloads it all, useful for diaplying messages.
-def list_out(msg_window, num_rows, input_window):
-    outcount = 0
-    for items in config.output:
-        msg_window.addstr(outcount,2,config.output[outcount])
-        while len(config.output) > num_rows -6:
-            config.output.pop(1)
-        msg_window.refresh()
-        input_window.border(0)
-        input_window.refresh()
-        outcount+=1
-
+#funky little function to deal with multi line messages and outputting messages clearly
 def update_messages(msg_window, num_rows, input_window):
-    returnto = input_window.getyx()
     outcount = 0
-    for items in config.output:
-        msg_window.addstr(outcount,2,config.output[outcount])
-        while len(config.output) > num_rows -6:
-            config.output.pop(1)
+    lineno = int(num_rows - 20)
+    limit = int(tui.num_cols/5*4-4)
+    for item in config.output:
+        if lineno < 1:
+            break
+        if len(item) > limit-6:
+            msglines = round(len(item) / limit) + 1
+            limitcounter = 1
+            for i in range(msglines):
+                lower = limitcounter -1
+                upper = limitcounter * limit
+                msg_window.addstr(lineno,2,config.output[outcount][lower*limit:upper])
+                limitcounter +=1
+                lineno -=1
+            outcount += 1
+        else:
+            msg_window.addstr(lineno,2,config.output[outcount])
+            lineno-=1
+            outcount+=1
         msg_window.refresh()
-        outcount+=1
-    input_window.move(returnto[0],returnto[1])
 
-#Clears the output, dumbass
+#Clears the output, dumbass. Needs work
 def clear_out(msg_window,num_rows, input_window):
     config.output = ["",]
-    list_out(msg_window,num_rows, input_window)
+    update_messages(msg_window,num_rows, input_window)
 
 #Guess what this function does.
 def check_command(command, msg_window, num_rows, input_window):
@@ -55,4 +57,4 @@ def check_command(command, msg_window, num_rows, input_window):
     #Catches command exceptions, don't remove!
     else:
         config.output.append("["+time.ctime()+"] Command '"+command+"' not recognised, please try another.")
-    list_out(msg_window, num_rows, input_window)
+    update_messages(msg_window, num_rows, input_window)

@@ -9,8 +9,8 @@ global aswho
 
 loggedin = ""
 aswho = ""
-currentchan = "general"
-currentguild = "hurbIndustries"
+currentchan = "ricing-theming"
+currentguild = "r/unixporn"
 output = [""]
 chatput = [""]
 commandlist = [

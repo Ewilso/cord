@@ -1,6 +1,5 @@
 import discord
 from multiprocessing import Process
-import time
 import commands
 import config
 import tui
@@ -12,11 +11,14 @@ class MyClient(discord.Client):
         config.aswho = str(self.user)
         config.loggedin = "Connected"
         tui.mainseq()
-        commands.list_out(tui.msg_window, tui.num_rows, tui.input_window)
-        #for i in client.guilds:
-        #    print(i)
-        #for i in guild.channels:
-        #    print(i)
+        commands.update_messages(tui.msg_window, tui.num_rows, tui.input_window)
+        guild = discord.utils.get(client.guilds, name=config.currentguild)
+        channel = discord.utils.get(guild.text_channels, name=config.currentchan)
+        messages = await channel.history(limit=100).flatten()
+        for item in messages:
+            config.output.append(str(item.author)+" "+str(item.content))
+        commands.update_messages(tui.msg_window, tui.num_rows, tui.input_window)
+
         def messagein():
             while True:
                 tui.main_window()
@@ -27,6 +29,7 @@ class MyClient(discord.Client):
                 if msginput == "quit" or msginput == "q":
                     curses.endwin()
                     break
+
         recieving = Process(target = messagein)
         recieving.start()
 
@@ -34,10 +37,11 @@ class MyClient(discord.Client):
         guild = discord.utils.get(client.guilds, name=config.currentguild)
         channel = discord.utils.get(guild.text_channels, name=config.currentchan)
         messages = await channel.history(limit=100).flatten()
-        if message.channel == config.currentchan:
-            for item in messages[::-1]:
-                config.output.append(str(item.author)+" "+str(item.content))
-            commands.update_messages(tui.msg_window, tui.num_rows, tui.input_window)
+        #if message.channel == config.currentchan:
+        commands.clear_out(tui.msg_window,tui.num_rows, tui.input_window)
+        for item in messages:
+            config.output.append(str(item.author)+" "+str(item.content))
+        commands.update_messages(tui.msg_window, tui.num_rows, tui.input_window)
 
 client = MyClient()
 client.run("Mzg3MzIxNTQ1NzI4NDU4NzU4.Xtq5ig.M2jhvjpNPEvTiXxxb8uAzVE3G-I")
