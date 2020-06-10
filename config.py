@@ -12,7 +12,8 @@ aswho = ""
 currentchan = "ricing-theming"
 currentguild = "r/unixporn"
 output = [""]
-chanput = [""]
+chanput = {}
+chatput = {}
 commandlist = [
 "",
 "Command (abbreviation) - description",
