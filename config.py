@@ -6,12 +6,13 @@ global currentchan
 global currentguild
 global loggedin
 global aswho
-
+global chatcount
 loggedin = ""
 aswho = ""
-currentchan = "ricing-theming"
-currentguild = "r/unixporn"
+currentchan = "general"
+currentguild = "hurbIndustries"
 output = [""]
+chatcount = 1
 chanput = {}
 chatput = {}
 commandlist = [

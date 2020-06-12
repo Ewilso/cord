@@ -17,7 +17,7 @@ class MyClient(discord.Client):
         for i in client.guilds:
             config.chanput[counter] = (str(i))
             counter+=1
-        commands.update_chans(config.chanput)
+        commands.update_chans(config.chanput, 1)
         commands.update_messages()
         guild = discord.utils.get(client.guilds, name=config.currentguild)
         channel = discord.utils.get(guild.text_channels, name=config.currentchan)
@@ -35,7 +35,7 @@ class MyClient(discord.Client):
             elif command == "/load" or command == "/l":
                 tui.main_window()
                 commands.clear_out(tui.input_window)
-                commands.update_chans(config.chanput)
+                commands.update_chans(config.chanput, 1)
                 out = commands.usr_input(tui.input_window, 1, 2, int(tui.num_cols/5*4-7), "$")
                 if out == "/exit" or out == "/e":
                     return
@@ -51,17 +51,34 @@ class MyClient(discord.Client):
                     for i in guild.text_channels:
                         config.chatput[counter] = (str(i))
                         counter+=1
-                    commands.update_chans(config.chatput)
+                    commands.update_chans(config.chatput, 1)
                     tui.main_window()
                     commands.clear_out(tui.input_window)
                     chan = commands.usr_input(tui.input_window, 1, 2, int(tui.num_cols/5*4-7), "$")
                     if chan == "/exit" or chan == "/e":
                         commands.clear_out(tui.input_window)
-                        commands.update_chans(config.chanput)
+                        commands.update_chans(config.chanput, 1)
                         return
+                    elif chan == "/down" or chan == "/d":
+                        if config.chatcount > int(tui.num_rows - 3):
+                            commands.update_chans(config.chatput, config.chatcount)
+                            chan2 = commands.usr_input(tui.input_window, 1, 2, int(tui.num_cols/5*4-7), "$")
+                            if chan2 == "/up" or chan2 == "/u":
+                                commands.update_chans(config.chatput,1)
+                                chan3 = commands.usr_input(tui.input_window, 1, 2, int(tui.num_cols/5*4-7), "$")
+                                chanchoice = config.chanput.get(int(chan3))
+                                config.currentchan = chanchoice
+                                commands.update_chans(config.chanput, 1)
+                                return
+                            else:
+                                chanchoice = config.chanput.get(int(chan2))
+                                config.currentchan = chanchoice
+                                commands.update_chans(config.chanput, 1)
+                                return
+
                     chanchoice = config.chanput.get(int(chan))
                     config.currentchan = chanchoice
-                    commands.update_chans(config.chanput)
+                    commands.update_chans(config.chanput, 1)
 
             #Help command to list options, find them in the config.py
             elif command == "/help" or command == "/h":
@@ -70,6 +87,11 @@ class MyClient(discord.Client):
                 for items in config.commandlist:
                     config.output.append(config.commandlist[count])
                     count+=1
+
+            elif command == "/down" or command == "/d":
+                if config.chatcount > int(tui.num_rows - 3):
+                    commands.update_chans(config.chatput, config.chatcount)
+
             #Catches command exceptions, don't remove!
             else:
                 return

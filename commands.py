@@ -14,13 +14,15 @@ def usr_input(window, r, c, length, prompt):
     return dec
 
 #Get the user's channels and guilds
-def update_chans(list):
-    outcount = 1
+def update_chans(list, start):
+    linecount = 1
+    config.chatcount = start
     for item in list:
-        tui.chat_window.addstr(outcount,2,str(item)+" "+list[outcount])
+        tui.chat_window.addstr(linecount,2,str(item)+" "+list[config.chatcount][:int(tui.num_cols/5-7)])
         tui.chat_window.refresh()
-        outcount+=1
-        if outcount > int(tui.num_rows - 3):
+        config.chatcount+=1
+        linecount+=1
+        if config.chatcount > int(tui.num_rows - 3):
             return
 
 #funky little function to deal with multi line messages and outputting messages clearly
