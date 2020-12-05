@@ -121,4 +121,4 @@ class MyClient(discord.Client):
             commands.update_messages()
 
 client = MyClient()
-client.run("Mzg3MzIxNTQ1NzI4NDU4NzU4.Xtq5ig.M2jhvjpNPEvTiXxxb8uAzVE3G-I")
+client.run(config.token)
